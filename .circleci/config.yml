@@ -69,7 +69,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [frontend-build]
       - run:
           name: Scan front-end
           command: |
@@ -92,7 +92,6 @@ jobs:
             npm install
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
-            npm audit fix
 
 workflows:
   default:
