@@ -77,7 +77,6 @@ jobs:
             npm install 
             npm audit --audit-level=critical
             npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
 
   scan-backend:
     docker:
@@ -93,7 +92,6 @@ jobs:
             npm install
             npm audit --audit-level=critical
             npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
             npm audit fix --force
 
 workflows:
