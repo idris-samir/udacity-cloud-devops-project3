@@ -10,7 +10,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} &&
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
 jobs:
@@ -114,7 +114,7 @@ jobs:
       - checkout
       - run:
           name: Install tar and gzip
-          command: apt-get install tar gzip
+          command: yum -y install tar gzip
       - run:
           name: Ensure back-end infrastructure exists
           command: |
