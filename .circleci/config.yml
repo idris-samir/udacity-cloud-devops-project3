@@ -159,10 +159,10 @@ jobs:
           command: |
             yum -y install tar gzip
             yum -y install python3
-            python3 get-pip.py --user
-            python3 -m pip install --user ansible
-            python3 -m pip install --user ansible-core==2.12.3
-            python3 -m pip install --upgrade --user ansible
+            yum -y install python3-pip
+            python3 -m pip install ansible
+            python3 -m pip install ansible-core==2.12.3
+            python3 -m pip install --upgrade ansible
       - attach_workspace:
           at: ~/
       - run:
