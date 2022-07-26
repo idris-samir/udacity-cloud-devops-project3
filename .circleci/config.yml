@@ -159,8 +159,8 @@ jobs:
           name: Install dependencies
           command: |
             yum -y install tar gzip
-            yum -y install python
-            yum -y install python-pip
+            yum -y install python3
+            yum -y install python3-pip
             python3 -m pip install ansible
             python3 -m pip install ansible-core
             python3 -m pip install --upgrade ansible
