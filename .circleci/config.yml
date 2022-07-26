@@ -150,7 +150,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - add_ssh_keys:
@@ -158,9 +158,15 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum -y install tar gzip
-            yum -y install python3
-            yum -y install python3-pip
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            sudo apt-get install tar gzip
+            # sudo apt-get install software-properties-common
+            # sudo add-apt-repository ppa:deadsnakes/ppa
+            # sudo apt-get update
+            sudo apt-get install python3
+            sudo apt install python3-pip
             python3 -m pip install ansible
             python3 -m pip install ansible-core
             python3 -m pip install --upgrade ansible
@@ -245,7 +251,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - add_ssh_keys:
@@ -253,12 +259,18 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum -y install tar gzip
-            yum -y install python3
-            yum -y install python3-pip
-            python3 -m pip install --user ansible
-            python3 -m pip install --user ansible-core
-            python3 -m pip install --upgrade --user ansible
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            sudo apt-get install tar gzip
+            # sudo apt-get install software-properties-common
+            # sudo add-apt-repository ppa:deadsnakes/ppa
+            # sudo apt-get update
+            sudo apt-get install python3
+            sudo apt install python3-pip
+            python3 -m pip install ansible
+            python3 -m pip install ansible-core
+            python3 -m pip install --upgrade ansible
             yum -y install nodejs npm
       - attach_workspace:
           at: ~/
