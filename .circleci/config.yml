@@ -135,6 +135,7 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
+            echo [web] > inventory.txt
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventory.txt
@@ -158,7 +159,7 @@ jobs:
           name: Install dependencies
           command: |
             yum -y install tar gzip
-            yum -y install python3
+            yum -y install python3.8
             yum -y install python3-pip
             python3 -m pip install ansible
             python3 -m pip install ansible-core
@@ -181,6 +182,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: install aws cli
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
           name: Run migrations
           command: |
             cd backend
@@ -193,12 +200,6 @@ jobs:
             then
               curl https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_$\{CIRCLE_WORKFLOW_ID:0:7\} -d '1'
             fi
-      - run:
-          name: install aws cli
-          command: |
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
       - destroy-environment:
           to: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy-environment:
