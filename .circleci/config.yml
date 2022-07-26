@@ -162,9 +162,9 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
             sudo apt-get install tar gzip
-            # sudo apt-get install software-properties-common
-            # sudo add-apt-repository ppa:deadsnakes/ppa
-            # sudo apt-get update
+            sudo apt-get install software-properties-common
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt-get update
             sudo apt-get install python3
             sudo apt install python3-pip
             python3 -m pip install ansible
@@ -263,9 +263,9 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
             sudo apt-get install tar gzip
-            # sudo apt-get install software-properties-common
-            # sudo add-apt-repository ppa:deadsnakes/ppa
-            # sudo apt-get update
+            sudo apt-get install software-properties-common
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt-get update
             sudo apt-get install python3
             sudo apt install python3-pip
             python3 -m pip install ansible
