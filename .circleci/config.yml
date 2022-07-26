@@ -162,8 +162,6 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
             sudo apt-get install tar gzip
-            # sudo apt-get install software-properties-common
-            # sudo add-apt-repository ppa:deadsnakes/ppa
             sudo apt-get update
             sudo apt-get upgrade
             sudo apt-get install python3
@@ -194,10 +192,12 @@ jobs:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
+      # - attach_workspace:
+      #     at: ~/
       - run:
           name: Run migrations
           command: |
-            cd backend
+            cd ~/project/backend
             npm install
             npm run migrations > migrations_dump.txt
       - run:
@@ -235,12 +235,12 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress')
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
-            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            echo API_URL="http://${BACKEND_IP}:3030" >> ~/project/frontend/.env
             cat frontend/.env
       - run:
           name: Deploy frontend objects
           command: |
-            cd frontend
+            cd ~/project/frontend
             npm install
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
@@ -264,8 +264,6 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
             sudo apt-get install tar gzip
-            # sudo apt-get install software-properties-common
-            # sudo add-apt-repository ppa:deadsnakes/ppa
             sudo apt-get update
             sudo apt-get upgrade
             sudo apt-get install python3
@@ -279,13 +277,13 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            cd backend
+            cd ~/project/backend
             npm i
             npm run build
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
-            cd .circleci/ansible
+            cd ~/project/.circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
