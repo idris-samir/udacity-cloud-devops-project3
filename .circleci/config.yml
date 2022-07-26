@@ -193,6 +193,12 @@ jobs:
             then
               curl https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_$\{CIRCLE_WORKFLOW_ID:0:7\} -d '1'
             fi
+      - run:
+          name: install aws cli
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - destroy-environment:
           to: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy-environment:
