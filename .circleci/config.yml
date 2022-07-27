@@ -192,6 +192,14 @@ jobs:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
+            sudo apt-get install tar gzip
+            sudo apt-get update
+            sudo apt-get upgrade
+            sudo apt-get install python3
+            sudo apt install python3-pip
+            python3 -m pip install ansible
+            python3 -m pip install ansible-core
+            python3 -m pip install --upgrade ansible
       - attach_workspace:
           at: ~/
       - run:
@@ -236,7 +244,7 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> ~/project/frontend/.env
-            cat frontend/.env
+            cat ~/project/frontend/.env
       - run:
           name: Deploy frontend objects
           command: |
