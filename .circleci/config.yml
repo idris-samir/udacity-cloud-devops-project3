@@ -203,9 +203,10 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
+            sudo apt-get install curl
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_$\{CIRCLE_WORKFLOW_ID:0:7\} -d '1'
+              curl https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
       - destroy-environment:
           to: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
@@ -228,6 +229,7 @@ jobs:
             python3 -m pip install --user ansible-core
             python3 -m pip install --upgrade --user ansible
             yum -y install nodejs npm
+            yum -y install tar gzip
       - run:
           name: Get backend url
           command: |
@@ -271,7 +273,7 @@ jobs:
             python3 -m pip install ansible
             python3 -m pip install ansible-core
             python3 -m pip install --upgrade ansible
-            yum -y install nodejs npm
+            sudo apt-get install nodejs npm
       - attach_workspace:
           at: ~/
       - run:
