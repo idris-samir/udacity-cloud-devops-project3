@@ -226,7 +226,8 @@ jobs:
             python3 -m pip install --user ansible
             python3 -m pip install --user ansible-core
             python3 -m pip install --upgrade --user ansible
-            yum -y install nodejs npm
+            curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+            sudo yum -y install nodejs
             yum -y install tar gzip
       - attach_workspace:
           at: ~/
