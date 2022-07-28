@@ -275,7 +275,6 @@ jobs:
             python3 -m pip install ansible
             python3 -m pip install ansible-core
             python3 -m pip install --upgrade ansible
-            sudo apt-get install nodejs npm
       - attach_workspace:
           at: ~/
       - run:
@@ -298,14 +297,19 @@ jobs:
 
   smoke-test:
     docker:
-      - image: amazon/aws-cli
+      - image: alpine:latest
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            yum -y install nodejs npm
+            yum -y install sudo
             yum -y install curl
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+            sudo yum -y install nodejs
       - run:
           name: Get backend url
           command: |
