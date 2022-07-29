@@ -1,8 +1,14 @@
 ---
 
+- name: "Copies the artifact"
+  copy:
+    src: ~/project/artifact.tar.gz
+    dest: ~/artifact.tar.gz
+    backup: yes
+
 - name: "Extracts the backend files"
   shell: |
-    tar xvfz ~/project/artifact.tar.gz
+    tar xvfz ~/artifact.tar.gz
 
 - name: "Starts the app"
   shell: |
