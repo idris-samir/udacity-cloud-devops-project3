@@ -295,18 +295,20 @@ jobs:
 
   smoke-test:
     docker:
-      - image: alpine
+      - image: alpine:latest
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            sudo apt-get install curl
-            sudo apt-get install nodejs
-            sudo apt-get install zip unzip
+            apk add update
+            apk add --update curl
+            apk add --update nodejs npm
+            apk add --update npm
+            apk add zip
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
-            sudo ./aws/install
+            ./aws/install
       - run:
           name: Get backend url
           command: |
