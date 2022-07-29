@@ -2,7 +2,7 @@
 
 - name: "Extracts the backend files"
   shell: |
-    tar xvfz artifact.tar.gz
+    tar xvfz ~/project/artifact.tar.gz
 
 - name: "Starts the app"
   shell: |
