@@ -270,10 +270,16 @@ jobs:
             sudo apt-get install tar gzip
             sudo apt-get update
             sudo apt-get upgrade
-            sudo apt-get install software-properties-common
-            echo | sudo add-apt-repository ppa:deadsnakes/ppa
-            sudo apt-get update
-            sudo apt-get install python3.8
+            sudo apt install build-essential zlib1g-dev libncurses5-dev \
+            libgdbm-dev libnss3-dev libssl-dev libreadline-dev \
+            libffi-dev libsqlite3-dev wget libbz2-dev
+            wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz
+            tar -xf Python-3.8.0.tgz
+            cd Python-3.8.0
+            ./configure --enable-optimizations
+            make -j 8
+            sudo make altinstall
+            cd ..
             sudo apt install python3-pip
             python3 -m pip install ansible
             python3 -m pip install ansible-core
@@ -287,8 +293,7 @@ jobs:
             npm i
             npm run build
             cd ..
-            # Zip the directory
-            tar -C ~/project/backend -czvf ~/project/artifact.tar.gz .
+            tar -C backend -czvf artifact.tar.gz .
             cd ~/project/.circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
