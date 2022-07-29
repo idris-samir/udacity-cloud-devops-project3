@@ -1,16 +1,16 @@
 ---
 
-- name: "Copies the artifact"
+- name: "Copy the artifact"
   copy:
     src: ~/project/artifact.tar.gz
     dest: ~/artifact.tar.gz
     backup: yes
 
-- name: "Extracts the backend files"
+- name: "Extract the backend files"
   shell: |
     tar xvfz ~/artifact.tar.gz
 
-- name: "Starts the app"
+- name: "Start the app"
   shell: |
     npm install
     pm2 stop default
