@@ -15,9 +15,29 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
+            echo "Destroying environment: ${CIRCLE_WORKFLOW_ID}
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --stack-name "<<parameters.frontend>>"
             aws cloudformation delete-stack --stack-name "<<parameters.backend>>"
+
+  revert-migrations:
+    description: Revert the last migration if successfully run in the current workflow.
+    parameters:
+      workflow_id:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
+    steps:
+      - run:
+          name: Revert migrations
+          when: on_fail
+          command: |
+            SUCCESS=$(curl --insecure  https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_<< parameters.workflow_id >>)
+            if(( $SUCCESS==1 )); 
+            then
+              cd ~/project/backend
+              npm install
+              npm run migration:revert --force
+            fi
 
 jobs:
   build-frontend:
@@ -208,11 +228,12 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+              curl https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
       - destroy-environment:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations
 
   deploy-frontend:
     docker:
@@ -254,6 +275,7 @@ jobs:
       - destroy-environment:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations
 
   deploy-backend:
     docker:
@@ -293,6 +315,7 @@ jobs:
       - destroy-environment:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations
 
   smoke-test:
     docker:
@@ -320,6 +343,11 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
                 return 0
@@ -341,11 +369,10 @@ jobs:
       - destroy-environment:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations
 
 workflows:
-
   default:
-
     jobs:
       - build-frontend
       - build-backend
