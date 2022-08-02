@@ -5,23 +5,23 @@
     src: ~/project/artifact.tar.gz
     dest: /home/ubuntu
 
-- name: load environment variables
+- name: "Load environment variables"
   become_method: sudo
   become_user: root
   become: yes
   shell: |
     ls -al
-    echo "NODE_ENV=production" >> ~/project/.env
-    echo "ENVIRONMENT=production" >> ~/project/.env
-    echo "TYPEORM_CONNECTION={{ lookup('env', 'TYPEORM_CONNECTION')}}" >> ~/project/.env
-    echo "TYPEORM_ENTITIES={{ lookup('env', 'TYPEORM_ENTITIES')}}" >> ~/project/.env
-    echo "TYPEORM_HOST={{ lookup('env', 'TYPEORM_HOST')}}" >> ~/project/.env
-    echo "TYPEORM_PORT={{ lookup('env', 'TYPEORM_PORT')}}" >> ~/project/.env
-    echo "TYPEORM_USERNAME={{ lookup('env', 'TYPEORM_USERNAME')}}" >> ~/project/.env
-    echo "TYPEORM_PASSWORD={{ lookup('env', 'TYPEORM_PASSWORD')}}" >> ~/project/.env
-    echo "TYPEORM_DATABASE={{ lookup('env', 'TYPEORM_DATABASE')}}" >> ~/project/.env
-    echo "TYPEORM_MIGRATIONS={{ lookup('env', 'TYPEORM_MIGRATIONS')}}" >> ~/project/.env
-    echo "TYPEORM_MIGRATIONS_DIR={{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}" >> ~/project/.env
+    echo "NODE_ENV=production" >> /home/ubuntu/.env
+    echo "ENVIRONMENT=production" >> /home/ubuntu/.env
+    echo "TYPEORM_CONNECTION={{ lookup('env', 'TYPEORM_CONNECTION')}}" >> /home/ubuntu/.env
+    echo "TYPEORM_ENTITIES={{ lookup('env', 'TYPEORM_ENTITIES')}}" >> /home/ubuntu/.env
+    echo "TYPEORM_HOST={{ lookup('env', 'TYPEORM_HOST')}}" >> /home/ubuntu/.env
+    echo "TYPEORM_PORT={{ lookup('env', 'TYPEORM_PORT')}}" >> /home/ubuntu/.env
+    echo "TYPEORM_USERNAME={{ lookup('env', 'TYPEORM_USERNAME')}}" >> /home/ubuntu/.env
+    echo "TYPEORM_PASSWORD={{ lookup('env', 'TYPEORM_PASSWORD')}}" >> /home/ubuntu/.env
+    echo "TYPEORM_DATABASE={{ lookup('env', 'TYPEORM_DATABASE')}}" >> /home/ubuntu/.env
+    echo "TYPEORM_MIGRATIONS={{ lookup('env', 'TYPEORM_MIGRATIONS')}}" >> /home/ubuntu/.env
+    echo "TYPEORM_MIGRATIONS_DIR={{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}" >> /home/ubuntu/.env
 
 - name: "Start the app"
   shell: |
