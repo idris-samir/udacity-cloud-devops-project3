@@ -3,7 +3,7 @@
 - name: "Extract the backend files"
   unarchive:
     src: ~/project/artifact.tar.gz
-    dest: ~/project
+    dest: ~/
 
 # - name: "Load environment variables"
 #   become_method: sudo
@@ -25,7 +25,8 @@
 
 - name: "Start the app"
   shell: |
-    cd ~/project
+    cd ~/
+    ls -al
     npm install
     pm2 stop default
     pm2 start npm -- start
