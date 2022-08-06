@@ -11,7 +11,7 @@
   become: yes
   shell: |
     ls -al
-    echo "NODE_ENV=production" >> ~/.env
+    echo "NODE_ENV=production" > ~/.env
     echo "ENVIRONMENT=production" >> ~/.env
     echo "TYPEORM_CONNECTION={{ lookup('env', 'TYPEORM_CONNECTION')}}" >> ~/.env
     echo "TYPEORM_ENTITIES={{ lookup('env', 'TYPEORM_ENTITIES')}}" >> ~/.env
@@ -24,8 +24,8 @@
     echo "TYPEORM_MIGRATIONS_DIR={{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}" >> ~/.env
 
 - name: "Start the app"
+  become: true
   shell: |
-    ls -al
     npm install
     pm2 stop default
-    pm2 start npm -- start
+    sudo pm2 start npm -- start
