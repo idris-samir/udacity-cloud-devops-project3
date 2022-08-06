@@ -370,10 +370,10 @@ jobs:
             else
               return 1
             fi
-      - destroy-environment:
-          frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
-          backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-      - revert-migrations
+      # - destroy-environment:
+      #     frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+      #     backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+      # - revert-migrations
 
   cloudfront-update:
     docker:
