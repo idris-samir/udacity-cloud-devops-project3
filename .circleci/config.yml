@@ -315,7 +315,7 @@ jobs:
             cd ~/project/backend
             npm i
             npm run build
-            rm -rf node_modules
+            # rm -rf node_modules
             cd ..
             tar -C backend -czvf artifact.tar.gz .
             cd ~/project/.circleci/ansible
