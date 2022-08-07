@@ -348,7 +348,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}" >> backend_ip.txt
+            echo "${API_URL}" >> instance_ip.txt
             cat instance_ip.txt
       - run:
           name: Backend smoke test.
