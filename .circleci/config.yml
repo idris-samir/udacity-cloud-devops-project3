@@ -329,7 +329,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: alpine:latest
+      - image: python:3.10.5-alpine3.16
     steps:
       - checkout
       - run:
