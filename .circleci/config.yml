@@ -183,12 +183,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            sudo apt-get update
+            sudo apt-get upgrade -y
+            sudo apt-get install tar gzip curl
+            sudo apt-get install openssh-server
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
-            sudo apt-get install tar gzip
-            sudo apt-get update
-            sudo apt-get upgrade
             sudo apt-get install python3
             sudo apt install python3-pip
             python3 -m pip install ansible
@@ -215,6 +216,9 @@ jobs:
       - run:
           name: install aws cli
           command: |
+            sudo apt update
+            sudo apt upgrade -y
+            sudo apt-get install curl
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
@@ -291,12 +295,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            sudo apt-get update
+            sudo apt-get upgrade -y
+            sudo apt-get install tar gzip curl
+            sudo apt-get install openssh-server
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
-            sudo apt-get install tar gzip
-            sudo apt-get update
-            sudo apt-get upgrade
             sudo apt install python3
             sudo apt install python3-pip
             python3 -m pip install ansible
@@ -310,6 +315,7 @@ jobs:
             cd ~/project/backend
             npm i
             npm run build
+            rm -rf node_modules
             cd ..
             tar -C backend -czvf artifact.tar.gz .
             cd ~/project/.circleci/ansible
@@ -331,11 +337,10 @@ jobs:
           command: |
             apk update
             apk upgrade
-            apk add --update curl
+            apk add --no-cache curl
             apk add --update nodejs npm
-            apk add --update npm
-            apk add zip
-            apk add --no-cache aws-cli
+            apk --no-cache add --virtual builds-deps build-base python3
+            pip install --upgrade pip && pip install --upgrade awscli
       - run:
           name: Get backend url
           command: |
@@ -343,20 +348,17 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
+            echo "${API_URL}" >> backend_ip.txt
+            cat instance_ip.txt
       - run:
           name: Backend smoke test.
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text)
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
+            export API_URL="$(cat instance_ip.txt)"
             if curl "${API_URL}/api/status" | grep "ok"
             then
-                exit 0
+                return 0
             else
-                exit 1
+                return 1
             fi
       - run:
           name: Frontend smoke test.
@@ -366,9 +368,9 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
                 # Change this to 0 after the job fails
-              exit 1
+              return 1
             else
-              exit 1
+              return 1
             fi
       # - destroy-environment:
       #     frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
