@@ -31,7 +31,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_<<parameters.ID>>)
+            SUCCESS=$(curl --insecure https://kvdb.io/LayypasQZ9vvCXyMNmixNz/migration_<<parameters.ID>>)
+            echo $SUCCESS
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -216,7 +217,6 @@ jobs:
       - run:
           name: install aws cli
           command: |
-            return 0
             sudo apt update
             sudo apt upgrade -y
             sudo apt-get install curl
@@ -243,7 +243,7 @@ jobs:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
-          ID: ${CIRCLE_WORKFLOW_ID:0:7}
+          ID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   deploy-frontend:
     docker:
@@ -286,7 +286,7 @@ jobs:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
-          ID: ${CIRCLE_WORKFLOW_ID:0:7}
+          ID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   deploy-backend:
     docker:
@@ -328,7 +328,7 @@ jobs:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
-          ID: ${CIRCLE_WORKFLOW_ID:0:7}
+          ID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   smoke-test:
     docker:
@@ -371,7 +371,6 @@ jobs:
             echo ${URL} 
             if curl -s ${URL} | grep "Welcome"
             then
-                # Change this to 0 after the job fails
               return 0
             else
               return 1
@@ -380,7 +379,7 @@ jobs:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
-          ID: ${CIRCLE_WORKFLOW_ID:0:7}
+          ID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   cloudfront-update:
     docker:
@@ -399,7 +398,7 @@ jobs:
           frontend: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           backend: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
-          ID: ${CIRCLE_WORKFLOW_ID:0:7}
+          ID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   cleanup:
     docker:
@@ -407,7 +406,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Get old stack workflow id
+          name: Remove old stacks and files
           command: |
             export OldWorkflowID=$(aws cloudformation \
               list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
