@@ -382,12 +382,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            yum -y install tar gzip
       - run:
           name: Update cloudfront distribution
           command: |
@@ -406,13 +400,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            yum -y install tar gzip
-      - attach_workspace:
-          at: ~/
-      - run:
           name: Get old stack workflow id
           command: |
             export OldWorkflowID=$(aws cloudformation \
