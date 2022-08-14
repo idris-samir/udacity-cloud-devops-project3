@@ -1,0 +1,14 @@
+URL01:
+https://github.com/idris-samir/udacity-cloud-devops-project3
+
+URL02:
+http://udapeople-4085d50.s3-website-us-east-1.amazonaws.com
+
+URL03:
+der4hrkuyrvo4.cloudfront.net
+
+URL04:
+http://http://3.88.167.172:3030/api/status
+
+URL05:
+http://ec2-44-203-49-128.compute-1.amazonaws.com:9090/targets
