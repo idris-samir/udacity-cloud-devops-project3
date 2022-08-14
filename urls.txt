@@ -5,7 +5,7 @@ URL02:
 http://udapeople-4085d50.s3-website-us-east-1.amazonaws.com
 
 URL03:
-der4hrkuyrvo4.cloudfront.net
+http://der4hrkuyrvo4.cloudfront.net
 
 URL04:
 http://http://3.88.167.172:3030/api/status
